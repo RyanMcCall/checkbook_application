@@ -18,9 +18,9 @@ print()
 print("🌮🌮🌮 Welcome to the Terminal Assisted Checkbook Organizer! 🌮🌮🌮")
 print()
 
-open = True
+run = True
 
-while open:
+while run:
     print("How can I help you?")
     print()
     print("1) View Current Balance")
@@ -28,7 +28,6 @@ while open:
     print("3) Record a Credit (deposit)")
     print("4) Exit")
     print()
-    
     
     # This loop runs until the user provides a valid menu choice
     while True:
@@ -48,11 +47,14 @@ while open:
         else:
             break
 
-    
+    # If user chooses 4, exit the program
     if user_choice == 4:
         print()
         print("🌮🌮🌮 Thank you for using T.A.C.O.! 🌮🌮🌮")
-        open = False
+        print()
+        run = False
+        
+    #If user chooses 2, withdraw money
     elif user_choice == 2:
         # This loop runs until the user provides a valid deposit amount
         while True:
@@ -63,5 +65,13 @@ while open:
             elif debit_amount.isdigit():
                 break
             else:
-                
-            
+                continue
+        
+        debit_amount = float(debit_amount)
+
+        transaction_info = ["debit", debit_amount]
+
+        with open("transaction_history.txt", "a") as f:
+            f.writelines(str(transaction_info) + "\n")
+
+        # Need to check if balance if balance goes below 0.
