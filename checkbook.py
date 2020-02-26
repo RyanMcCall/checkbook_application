@@ -1,3 +1,5 @@
+from os import path
+
 def handle_commas(string):
     ''' Accepts a string and returns a string with the commas removed '''
     return string.replace(",", "")
@@ -13,14 +15,36 @@ def isfloat(string):
     else:
         return False
 
+def clean_strings(string):
+    '''Accepts a string and returns it without newline characters'''
+    return string.replace("\n", "")
+
+def get_transaction_history():
+    '''Accepts no arguments and return a list of floats from transaction_history.txt'''
+    with open("transaction_history.txt") as f:
+        transactions = f.readlines()
+    
+    clean_transactions = [float(clean_strings(transaction)) for transaction in transactions]
+
+    return clean_transactions
+
+def current_balance():
+    '''Accepts no arguments and return a a sum of the transactions from get_transaction_history()'''
+    current_account_balance = sum(get_transaction_history())
+    return current_account_balance
+    
+if not path.isfile("transaction_history.txt"):
+    with open("transaction_history.txt", "a") as f:
+        pass
 
 print()
 print("🌮🌮🌮 Welcome to the Terminal Assisted Checkbook Organizer! 🌮🌮🌮")
-print()
 
 run = True
 
+# Runs until 4 is selected
 while run:
+    print()
     print("How can I help you?")
     print()
     print("1) View Current Balance")
@@ -56,22 +80,71 @@ while run:
         
     #If user chooses 2, withdraw money
     elif user_choice == 2:
+        print()
         # This loop runs until the user provides a valid deposit amount
+        # (must be float or int and not higher than current balance)
         while True:
             debit_amount = input("How much would you like to debit? $")
-
+            
+            # Verify that the user has provided a float or int
             if isfloat(debit_amount):
-                break
+                if float(debit_amount) < 0:
+                    print()
+                    print("Sorry, debits must be positive numbers.")
+                    print()
+                    continue
+                debit_amount = float(debit_amount)
             elif debit_amount.isdigit():
-                break
+                if int(debit_amount) < 0:
+                    print()
+                    print("Sorry, debits must be positive numbers.")
+                    print()
+                    continue
+                debit_amount = float(debit_amount)
             else:
+                print("Sorry, debits must be a positive number.")
                 continue
-        
-        debit_amount = float(debit_amount)
 
-        transaction_info = ["debit", debit_amount]
+            # Verify that the debit amount won't overdraw the account
+            if debit_amount > current_balance():
+                print("Sorry, current balance is", current_balance(), "and", debit_amount, "will overdraft the account")
+                continue
+            else:
+                debit_amount = debit_amount * -1
+                break
 
         with open("transaction_history.txt", "a") as f:
-            f.writelines(str(transaction_info) + "\n")
+            f.write(str(debit_amount) + "\n")
 
-        # Need to check if balance if balance goes below 0.
+    elif user_choice == 1:
+        print()
+        print("Current balance is:", current_balance())
+        print()
+
+    elif user_choice == 3:
+        print()
+
+        while True:
+            credit_amount = input("How much would you like to credit? $")
+
+            if isfloat(credit_amount):
+                if float(credit_amount) < 0:
+                    print()
+                    print("Sorry, debits must be positive numbers.")
+                    print()
+                    continue
+                credit_amount = float(credit_amount)
+                break
+            elif credit_amount.isdigit():
+                if int(credit_amount) < 0:
+                    print()
+                    print("Sorry, debits must be positive numbers.")
+                    print()
+                credit_amount = float(credit_amount)
+                break
+            else:
+                print("Sorry, debits must be a positive number.")
+                continue
+
+        with open("transaction_history.txt", "a") as f:
+            f.write(str(credit_amount) + "\n")
