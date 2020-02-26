@@ -32,18 +32,15 @@ def current_balance():
     '''Accepts no arguments and return a a sum of the transactions from get_transaction_history()'''
     current_account_balance = sum(get_transaction_history())
     return current_account_balance
-    
-if not path.isfile("transaction_history.txt"):
-    with open("transaction_history.txt", "a") as f:
-        pass
 
-print()
-print("🌮🌮🌮 Welcome to the Terminal Assisted Checkbook Organizer! 🌮🌮🌮")
+def say_positive_exit():
+    '''Accepts no arguments and prints message'''
+    print()
+    print("Sorry, input must be a positive number. To exit, type exit")
+    print()
 
-run = True
-
-# Runs until 4 is selected
-while run:
+def show_menu():
+    '''Accepts no arguments and prints menu'''
     print()
     print("How can I help you?")
     print()
@@ -52,31 +49,56 @@ while run:
     print("3) Record a Credit (deposit)")
     print("4) Exit")
     print()
+
+def exit_taco():
+    print()
+    print("🌮🌮🌮 Thank you for using T.A.C.O.! 🌮🌮🌮")
+    print()
+
+def say_no_overdraft():
+    print()
+    print("Sorry, current balance is", current_balance(), "and", debit_amount, "will overdraft the account")
+    print()
+
+def show_current_balance():
+    print()
+    print("Current balance is:", current_balance())
+
+def say_invalid_user_choice():
+    print("Sorry, your choice must be 1, 2, 3, or 4")
+    print()
+    
+if not path.isfile("transaction_history.txt"):
+    with open("transaction_history.txt", "a") as f:
+        pass
+
+print()
+print("🌮🌮🌮 Welcome to the Terminal Assisted Checkbook Organizer! 🌮🌮🌮")
+
+# Runs until 4 is selected
+while True:
+    show_menu()
     
     # This loop runs until the user provides a valid menu choice
     while True:
         user_choice = input("Your Choice? ")
 
         if not user_choice.isdigit():
-            print("Sorry, your choice must be 1, 2, 3, or 4.")
-            print()
+            say_invalid_user_choice()
             continue
 
         user_choice = int(user_choice)
 
         if user_choice > 4 or user_choice < 1:
-            print("Sorry, your choice must be 1, 2, 3, or 4")
-            print()
+            say_invalid_user_choice()
             continue
         else:
             break
 
     # If user chooses 4, exit the program
     if user_choice == 4:
-        print()
-        print("🌮🌮🌮 Thank you for using T.A.C.O.! 🌮🌮🌮")
-        print()
-        run = False
+        exit_taco()
+        break
         
     #If user chooses 2, withdraw money
     elif user_choice == 2:
@@ -85,66 +107,64 @@ while run:
         # (must be float or int and not higher than current balance)
         while True:
             debit_amount = input("How much would you like to debit? $")
+            debit_amount = handle_commas(debit_amount)
             
             # Verify that the user has provided a float or int
             if isfloat(debit_amount):
-                if float(debit_amount) < 0:
-                    print()
-                    print("Sorry, debits must be positive numbers.")
-                    print()
+                if float(debit_amount) <= 0:
+                    say_positive_exit()
                     continue
                 debit_amount = float(debit_amount)
             elif debit_amount.isdigit():
-                if int(debit_amount) < 0:
-                    print()
-                    print("Sorry, debits must be positive numbers.")
-                    print()
+                if int(debit_amount) <= 0:
+                    say_positive_exit()
                     continue
                 debit_amount = float(debit_amount)
+            elif debit_amount.lower() == "exit":
+                break
             else:
-                print("Sorry, debits must be a positive number.")
+                say_positive_exit()
                 continue
 
             # Verify that the debit amount won't overdraw the account
             if debit_amount > current_balance():
-                print("Sorry, current balance is", current_balance(), "and", debit_amount, "will overdraft the account")
+                say_no_overdraft()
                 continue
             else:
                 debit_amount = debit_amount * -1
                 break
-
-        with open("transaction_history.txt", "a") as f:
-            f.write(str(debit_amount) + "\n")
+        # If user typed exit then this won't run
+        if type(debit_amount) == float:    
+            with open("transaction_history.txt", "a") as f:
+                f.write(str(debit_amount) + "\n")
 
     elif user_choice == 1:
-        print()
-        print("Current balance is:", current_balance())
-        print()
+        show_current_balance()
 
     elif user_choice == 3:
         print()
 
         while True:
             credit_amount = input("How much would you like to credit? $")
+            credit_amount = handle_commas(credit_amount)
 
             if isfloat(credit_amount):
                 if float(credit_amount) < 0:
-                    print()
-                    print("Sorry, debits must be positive numbers.")
-                    print()
+                    say_positive_exit()
                     continue
                 credit_amount = float(credit_amount)
                 break
             elif credit_amount.isdigit():
                 if int(credit_amount) < 0:
-                    print()
-                    print("Sorry, debits must be positive numbers.")
-                    print()
+                    say_positive_exit()
                 credit_amount = float(credit_amount)
                 break
+            elif credit_amount == "exit":
+                break
             else:
-                print("Sorry, debits must be a positive number.")
+                say_positive_exit()
                 continue
 
-        with open("transaction_history.txt", "a") as f:
-            f.write(str(credit_amount) + "\n")
+        if type(debit_amount) == float:
+            with open("transaction_history.txt", "a") as f:
+                f.write(str(credit_amount) + "\n")
