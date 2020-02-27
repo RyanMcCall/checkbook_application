@@ -8,6 +8,8 @@
 
 :point_up: Please use this version for the final grade :point_up:
 
+## Version History
+
 ### Version 1
 
 [Version 1](https://github.com/RyanMcCall/checkbook_application/blob/master/checkbook_v1/checkbook_v1.py) was the MVP (Minimum Viable Product) for this project. This version lacked many docstring and comments and the print statements could have been clearer. Also the code was left in the order that it was solved and not a more readable form.
