@@ -73,7 +73,7 @@ def show_current_balance():
 def say_invalid_user_choice():
     '''Accepts no arguments and prints that choice is invalid'''
     print()
-    print("🌮 Sorry, your choice must be 1, 2, 3, or 4")
+    print("🌮 Sorry, your choice must be 1, 2, 3, 4, or 5.")
     print()
 
 def say_debiting(amount):
