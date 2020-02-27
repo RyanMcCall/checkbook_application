@@ -2,7 +2,7 @@
 
 ## Current Working Version
 
-:point_down: Please user this version for the final grade :point_down:
+:point_down: Please use this version for the final grade :point_down:
 
 [Version 3](https://github.com/RyanMcCall/checkbook_application/blob/master/checkbook_final_version.py)
 
