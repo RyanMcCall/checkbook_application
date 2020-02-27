@@ -29,11 +29,11 @@
 - [x] Add a credit (deposit)
 - [x] Exit
 - [x] Show transaction
-- [] Add categories to each transaction
-    - [] View transaction by catagory
-    - [] Summary stats about categories
-- [] Record datetime on transaction
-    - [] View transaction by day
-    - [] Inlude timestamp on all views
-- [] Add description to transaction
-- [] Allow modification of past transactions
+- [ ] Add categories to each transaction
+    - [ ] View transaction by catagory
+    - [ ] Summary stats about categories
+- [ ] Record datetime on transaction
+    - [ ] View transaction by day
+    - [ ] Inlude timestamp on all views
+- [ ] Add description to transaction
+- [ ] Allow modification of past transactions
