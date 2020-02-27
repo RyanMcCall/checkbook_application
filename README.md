@@ -28,12 +28,12 @@
 - [x] Add a debit (withdrawal)
 - [x] Add a credit (deposit)
 - [x] Exit
-- [x] Show transaction
+- [x] Show transaction history
 - [ ] Add categories to each transaction
-    - [ ] View transaction by catagory
+    - [ ] View transactions by catagory
     - [ ] Summary stats about categories
 - [ ] Record datetime on transaction
-    - [ ] View transaction by day
+    - [ ] View transactions by day
     - [ ] Inlude timestamp on all views
 - [ ] Add description to transaction
 - [ ] Allow modification of past transactions
