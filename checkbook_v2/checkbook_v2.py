@@ -36,7 +36,7 @@ def current_balance():
 def say_positive_exit():
     '''Accepts no arguments and prints message'''
     print()
-    print("Sorry, input must be a positive number. To exit, type exit")
+    print("Sorry, input must be a positive number. To exit, type exit.")
     print()
 
 def show_menu():
@@ -51,23 +51,33 @@ def show_menu():
     print()
 
 def exit_taco():
+    '''Accepts no arguments and prints exit message'''
     print()
     print("🌮🌮🌮 Thank you for using T.A.C.O.! 🌮🌮🌮")
     print()
 
 def say_no_overdraft():
     print()
-    print("Sorry, current balance is", current_balance(), "and", debit_amount, "will overdraft the account")
+    print("Sorry, current balance is ${:,.2f} and ${:,.2f} will overdraft the account. If you would like to exit, type exit.".format(current_balance(), debit_amount))
     print()
 
 def show_current_balance():
     print()
-    print("Current balance is:", current_balance())
+    print("Current balance is: ${:,.2f}".format(current_balance()))
 
 def say_invalid_user_choice():
     print("Sorry, your choice must be 1, 2, 3, or 4")
     print()
-    
+
+def say_debiting(amount):
+    print()
+    print("Debiting ${:,.2f} from your balance.".format(amount))
+
+def say_crediting(amount):
+    print()
+    print("Crediting ${:,.2f} to your balance.".format(amount))
+
+# Checks if transaction_history.txt exist and if it doesn't, creates it with nothing in it.    
 if not path.isfile("transaction_history.txt"):
     with open("transaction_history.txt", "a") as f:
         pass
@@ -114,7 +124,7 @@ while True:
                 if float(debit_amount) <= 0:
                     say_positive_exit()
                     continue
-                debit_amount = float(debit_amount)
+                debit_amount = round(float(debit_amount), 2)
             elif debit_amount.isdigit():
                 if int(debit_amount) <= 0:
                     say_positive_exit()
@@ -131,8 +141,10 @@ while True:
                 say_no_overdraft()
                 continue
             else:
+                say_debiting(debit_amount)
                 debit_amount = debit_amount * -1
                 break
+
         # If user typed exit then this won't run
         if type(debit_amount) == float:    
             with open("transaction_history.txt", "a") as f:
@@ -152,7 +164,7 @@ while True:
                 if float(credit_amount) < 0:
                     say_positive_exit()
                     continue
-                credit_amount = float(credit_amount)
+                credit_amount = round(float(credit_amount), 2)
                 break
             elif credit_amount.isdigit():
                 if int(credit_amount) < 0:
@@ -164,7 +176,9 @@ while True:
             else:
                 say_positive_exit()
                 continue
+        
+        say_crediting(credit_amount)
 
-        if type(debit_amount) == float:
+        if type(credit_amount) == float:
             with open("transaction_history.txt", "a") as f:
                 f.write(str(credit_amount) + "\n")
